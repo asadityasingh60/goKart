@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import { Rating } from 'react-simple-star-rating';
 
 
-export default function Product({product}){
+export default function ProductCard({product}){
     const options = {
         fillColor: "tomato",
         initialValue: product.ratings,

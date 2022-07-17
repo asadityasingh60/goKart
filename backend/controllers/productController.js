@@ -22,19 +22,27 @@ exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
 //Get All Product or Render All Product on Main Page
 exports.getAllProducts = catchAsyncErrors(async(req,res,next)=>{
 
-    const resultPerPage = 8;
+    const resultPerPage = 4;
     const productsCount = await Product.countDocuments();
 
     const apiFeature = new ApiFeatures(Product.find(),req.query)    // (query, queryStr)
     .search()
     .filter()
-    .pagination(resultPerPage);
-    const products = await apiFeature.query;
+
+    let products = await apiFeature.query;
+
+    let filteredProductsCount = products.length;
+
+    apiFeature.pagination(resultPerPage);
+
+    products = await apiFeature.query.clone();       // we have to use clone() when we call function again
 
     res.status(200).json({
         success: true,
         products,
-        productsCount
+        productsCount,
+        resultPerPage,
+        filteredProductsCount
     }); 
 });
 
