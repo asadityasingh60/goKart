@@ -1,6 +1,7 @@
 const app = require("./app");
 const dotenv = require("dotenv");
 const connectDatabase = require("./config/database");
+const cloudinary = require("cloudinary");
 
 //Handling Uncaught Exception --->  Uncaught means that the error was not caught in the catch part of the try-catch block.
 process.on("uncaughtException",(err)=>{
@@ -16,6 +17,13 @@ dotenv.config({path:"backend/config/config.env"});  // This configs the "listen"
 
 //Connecting to database
 connectDatabase();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
 
 const server = app.listen(process.env.PORT,()=>{              //process.env looks for a variable named PORT in config.env
     console.log(`Server is Working on http://localhost:${process.env.PORT}`)

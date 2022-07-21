@@ -32,12 +32,15 @@ const userSchema = new mongoose.Schema({
           type: String,
           required: true,
         },
-    },
+      },
     role: {
         type: String,
         default: "user"
     },
-
+    createdAt:{
+        type: Date,
+        default: Date.now,
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 });

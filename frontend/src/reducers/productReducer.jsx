@@ -23,7 +23,7 @@ export const productsReducer = ( state = { products:[] }, action)=>{
                 products: action.payload.products,           // Payload is all the data coming from backend from res.status(200).json({})
                 productsCount: action.payload.productsCount,
                 resultPerPage: action.payload.resultPerPage,
-                // filteredProductsCount : action.payload.filteredProductsCount,
+                filteredProductsCount : action.payload.filteredProductsCount,
             };
         case ALL_PRODUCT_FAIL:
             return{

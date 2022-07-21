@@ -40,6 +40,8 @@ export default function Products(){
 
     const {keyword} = useParams();
 
+    let count = filteredProductsCount;
+
     function setCurrentPageNo(event){
         setCurrentPage(event);
     }
@@ -104,24 +106,24 @@ export default function Products(){
                         </fieldset>
                     </div>
 
-                    {resultPerPage<filteredProductsCount && 
-                        <div className="paginationBox">
-                        <Pagination
-                            activePage={currentPage}
-                            itemsCountPerPage={resultPerPage}
-                            totalItemsCount={productsCount}
-                            onChange={setCurrentPageNo}
-                            nextPageText="Next"
-                            prevPageText="Prev"
-                            firstPageText="1st"
-                            lastPageText="Last"
-                            itemClass="page-item"
-                            linkClass="page-link"
-                            activeClass="pageItemActive"
-                            activeLinkClass="pageLinkActive"
-                        />
-                        </div>
-                    }
+                    {resultPerPage < count && (
+                    <div className="paginationBox">
+                    <Pagination
+                        activePage={currentPage}
+                        itemsCountPerPage={resultPerPage}
+                        totalItemsCount={productsCount}
+                        onChange={setCurrentPageNo}
+                        nextPageText="Next"
+                        prevPageText="Prev"
+                        firstPageText="1st"
+                        lastPageText="Last"
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        activeClass="pageItemActive"
+                        activeLinkClass="pageLinkActive"
+                    />
+                    </div>
+                )}
                 </Fragment>
             )}
         </Fragment>
