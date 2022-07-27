@@ -2,12 +2,35 @@ const Product = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures")
+const cloudinary = require("cloudinary");
 
 
 //CreateProduct --Admin
 exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
 
-    req.body.user = req.user.id;      
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+        images.push(req.body.images);
+    } else {
+        images = req.body.images;
+    }
+
+    const imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "products",
+    });
+
+    imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+        });
+    }
+
+    req.body.user = req.user.id;   
+    req.body.images = imagesLinks;   
     // Admin requested to create the Product so req.user.id contain Admin's id
     
     const product = await Product.create(req.body);
@@ -65,41 +88,80 @@ exports.getProductDetails = catchAsyncErrors(async(req,res,next)=>{
 
 
 
-//Update a Product details --Admin
-exports.updateProduct = catchAsyncErrors(async(req,res,next)=>{
-    let product = Product.findById(req.params.id);
+// Update Product -- Admin
 
-    if(!product){
-        return new ErrorHandler("Product Not Found",404);
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
+  let product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return next(new ErrorHander("Product not found", 404));
+  }
+
+  // Images Start Here
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting Images From Cloudinary
+    for (let i = 0; i < product.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(product.images[i].public_id);
     }
 
-    product = await Product.findByIdAndUpdate(req.params.id,req.body,{
-        new:true,
-        runValidators: true,      // Built in Mongoose Validator checks whether every required:true objec of schema is given or not
-        useFindAndModify: false
-    });
+    const imagesLinks = [];
 
-    res.status(200).json({
-        success:true,
-        product
-    });
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "products",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+  }
+
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    product,
+  });
 });
 
 
-//Delete A Product --Admin
-exports.deleteProduct = catchAsyncErrors(async(req,res,next)=>{
+// Delete Product
+
+exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
-
-    if(!product){
-        return new ErrorHandler("Product Not Found",404);
+  
+    if (!product) {
+      return next(new ErrorHander("Product not found", 404));
     }
-
+  
+    // Deleting Images From Cloudinary
+    for (let i = 0; i < product.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+    }
+  
     await product.remove();
+  
     res.status(200).json({
-        success:true,
-        message: "Product Deleted Successfully"
+      success: true,
+      message: "Product Delete Successfully",
     });
-});
+  });
 
 
 //Create New Review or Update the Review
@@ -212,3 +274,16 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
       success: true,
     });
   });
+
+// Get All Product (Admin)
+exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+    const products = await Product.find();
+  
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  });
+
+
+  

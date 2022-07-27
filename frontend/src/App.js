@@ -29,6 +29,13 @@ import Payment from "./components/Cart/Payment.jsx";
 import OrderSuccess from "./components/Cart/OrderSuccess.jsx";
 import MyOrders from "./components/Order/MyOrders.jsx";
 import OrderDetails from "./components/Order/OrderDetails.jsx";
+import Dashboard from "./components/Admin/Dashboard.jsx";
+import ProductList from "./components/Admin/ProductList.jsx";
+import NewProduct from "./components/Admin/NewProduct.jsx";
+import UpdateProduct from "./components/Admin/UpdateProduct.jsx";
+import OrderList from "./components/Admin/OrderList.jsx";
+import ProcessOrder from "./components/Admin/ProcessOrder.jsx";
+
 
 
 export default function App() {
@@ -40,6 +47,7 @@ export default function App() {
     const {data} = await axios.get("/api/v1/stripeapikey");
     setStripeApiKey(data.stripeApiKey);
   }
+ 
 
   useEffect(()=>{
     WebFont.load({
@@ -47,8 +55,8 @@ export default function App() {
         families:["Roboto","Droid Sans","Chilanka"]
       }
     });
-    store.dispatch(loadUser());
 
+    store.dispatch(loadUser());
     getStripeApiKey();
   },[]);
 
@@ -76,6 +84,12 @@ export default function App() {
         {isAuthenticated && <Route exact path="/success" element={<OrderSuccess/>}/>}
         {isAuthenticated && <Route exact path="/orders" element={<MyOrders/>}/>}
         {isAuthenticated && <Route exact path="/order/:id" element={<OrderDetails/>}/>}
+        <Route exact path="/admin/dashboard" element={<Dashboard/>}/>
+        <Route exact path="/admin/products" element={<ProductList/>}/>
+        <Route exact path="/admin/product/new" element={<NewProduct/>}/>
+        <Route exact path="/admin/product/:id" element={<UpdateProduct/>}/>
+        <Route exact path="/admin/orders" element={<OrderList/>}/>
+        <Route exact path="/admin/order/:id" element={<ProcessOrder/>}/>
       </Routes>
       <Footer/>
     </Router>

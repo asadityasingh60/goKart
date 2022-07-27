@@ -282,3 +282,20 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     message: "User Deleted Successfully",
   });
 });
+
+// exports.getRole = catchAsyncErrors(async (req, res, next) => {
+//   const user = await User.findById(req.user.id);
+//   let role=false;
+
+//   if(!user){ 
+//     role = false;
+//   } else {
+//     if(user.role==="admin")
+//     {
+//       role=true;
+//     }
+//   }
+//   res.status(200).json({ 
+//       role
+//   });
+// });
