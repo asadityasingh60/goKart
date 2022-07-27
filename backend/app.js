@@ -4,6 +4,12 @@ const errorMiddleware = require("./middleware/error");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
+const dotenv = require("dotenv");
+
+
+//Config
+dotenv.config({path:"backend/config/config.env"});  // This configs the "listen" to connect to config.env in config folder
+
 
 app.use(express.json());   // In-built which parses the incoming data in req.body "https://dev.to/gathoni/express-req-params-req-query-and-req-body-4lpc"
 app.use(cookieParser());
@@ -14,10 +20,12 @@ app.use(fileUpload());
 var product = require("./routes/productRoute");
 var user = require("./routes/userRoute");
 var order = require("./routes/orderRoute");
+var payment = require("./routes/paymentRoute");
 
 app.use("/api/v1",product);
 app.use("/api/v1",user);
-app.use("/api/v1/",order)
+app.use("/api/v1/",order);
+app.use("/api/v1/",payment);
 
 
 //MiddleWare for Error

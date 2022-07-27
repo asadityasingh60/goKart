@@ -1,20 +1,22 @@
 import React from "react";
 import profilePng from "../../images/Profile.png";
-import { Rating } from 'react-simple-star-rating';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
 
 export default function ReviewCard({review}){
-    const options = {
-        fillColor: "tomato",
-        initialValue: review.rating,
-        allowHalfIcon: true,
-        size: window.innerWidth < 600 ? 20 : 25
-    }
+
     return(
         <div className="reviewCard">
             <img src={profilePng} alt="User"/>
             <p>{review.name}</p>
-            <Rating {...options}/>
-            <span>{review.comment}</span>
+            <Rating
+                name="hover-feedback"
+                value={review.rating}
+                readOnly
+                precision={0.5}
+                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            />
+            <span className="reviewCardComment">{review.comment}</span>
         </div>
     );
 }

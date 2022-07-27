@@ -8,9 +8,10 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {useAlert} from "react-alert";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../actions/userAction";
 import HomeIcon from '@mui/icons-material/Home';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 export default function UserOptions({user}){
 
@@ -18,11 +19,21 @@ export default function UserOptions({user}){
     const alert = useAlert();
     const dispatch = useDispatch();
 
+    const {cartItems} = useSelector((state)=>state.cart);
 
     const [open,setOpen] = useState(false);
 
     const options =[
         {icon: <HomeIcon/>, name:"Home", func: home},
+        {
+            icon: (
+              <ShoppingCartIcon
+                style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
+              />
+            ),
+            name: `Cart(${cartItems.length})`,
+            func: cart,
+        },
         {icon: <ListAltIcon/>, name:"Orders", func: orders},
         {icon: <PersonIcon/>, name:"Profile", func: account},
         {icon: <ExitToAppIcon/>, name:"Logout", func: logoutUser},
@@ -33,7 +44,11 @@ export default function UserOptions({user}){
     }
 
     function dashboard(){
-        navigate("/dashboard");
+        navigate("/admin/dashboard");
+    }
+
+    function cart(){
+        navigate("/cart");
     }
 
     function home(){
@@ -70,8 +85,14 @@ export default function UserOptions({user}){
                     />
                 }
             >
-            {options.map((item)=>(
-                <SpeedDialAction key={item.name} icon={item.icon} tooltipTitle={item.name} onClick={item.func} />
+            {options.map((item) => (
+            <SpeedDialAction
+                key={item.name}
+                icon={item.icon}
+                tooltipTitle={item.name}
+                onClick={item.func}
+                tooltipOpen={window.innerWidth <= 600 ? true : false}
+            />
             ))}
                 
             </SpeedDial>
