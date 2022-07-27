@@ -19,7 +19,7 @@ import UpdateProfile from "./components/User/UpdateProfile.jsx";
 import UpdatePassword from "./components/User/UpdatePassword.jsx";
 import ForgotPassword from "./components/User/ForgotPassword.jsx";
 import ResetPassword from "./components/User/ResetPassword.jsx";
-
+import Cart from "./components/Cart/Cart.jsx";
 
 
 export default function App() {
@@ -53,6 +53,7 @@ export default function App() {
         {isAuthenticated && <Route exact path="/password/update" element={<UpdatePassword/>}/>}
         <Route exact path="/password/forgot" element={<ForgotPassword/>}/>
         <Route exact path="/password/reset/:token" element={<ResetPassword/>}/>
+        <Route exact path="/cart" element={<Cart/>}/>
       </Routes>
       <Footer/>
       
