@@ -99,14 +99,14 @@ const [anchorElNav, setAnchorElNav] = React.useState(null);
                 </MenuItem>
 
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link className="linkA" to='/'>Cart</Link></Typography>
+                  <Typography textAlign="center"><Link className="linkA" to='/cart'>Cart</Link></Typography>
                 </MenuItem>
                 
                 <MenuItem onClick={handleCloseNavMenu}>        
-                  <Typography textAlign="center"><Link className="linkA" to='/'>Contact Us</Link></Typography>
+                  <Typography textAlign="center"><Link className="linkA" to='/contact'>Contact Us</Link></Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link className="linkA" to='/'>About</Link></Typography>
+                  <Typography textAlign="center"><Link className="linkA" to='/about'>About</Link></Typography>
                 </MenuItem>
 
             </Menu>
@@ -147,13 +147,13 @@ const [anchorElNav, setAnchorElNav] = React.useState(null);
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                <Link className="linkC" to='/'>About</Link>
+                <Link className="linkC" to='/about'>About</Link>
               </Button>
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                <Link className="linkC" to='/'>Contact Us</Link>
+                <Link className="linkC" to='/contact'>Contact Us</Link>
               </Button>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

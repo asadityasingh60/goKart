@@ -9,6 +9,8 @@ import Chart from 'chart.js/auto';
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
 import { getAdminProduct } from "../../actions/productAction";
+import { getAllOrders } from "../../actions/orderAction";
+import { getAllUsers } from "../../actions/userAction";
 
 export default function Dashboard(){
 
@@ -16,6 +18,7 @@ export default function Dashboard(){
 
     const { products } = useSelector((state) => state.products);
     const { orders } = useSelector((state) => state.allOrders);
+    const { users } = useSelector((state) => state.allUsers);
 
     let outOfStock = 0;
 
@@ -26,8 +29,16 @@ export default function Dashboard(){
       }
     });
 
+    let totalAmount = 0;
+  orders &&
+    orders.forEach((item) => {
+      totalAmount += item.totalPrice;
+    });
+
     useEffect(() => {
         dispatch(getAdminProduct());
+        dispatch(getAllOrders());
+        dispatch(getAllUsers());
       }, [dispatch]);
 
     const lineState = {
@@ -37,7 +48,7 @@ export default function Dashboard(){
                 label:"TOTAL AMOUNT",
                 backgroundColor: ["tomato"],
                 hoverBackgroundColor: ["rgb(197,72,49)"],
-                data: [0,4000]
+                data: [0,totalAmount]
             }
         ],
     }
@@ -64,7 +75,7 @@ export default function Dashboard(){
                 <div className="dashboardSummary">
                     <div>
                         <p>
-                            Total Amount <br/> Rs2000
+                            Total Amount <br/> ₹{totalAmount}
                         </p>
                     </div>
                     <div className="dashboardSummaryBox2">
@@ -78,7 +89,7 @@ export default function Dashboard(){
                         </Link>
                         <Link to="/admin/users">
                             <p>Users</p>
-                            <p>6</p>
+                            <p>{users.length}</p>
                         </Link>
                     </div>
                 </div>

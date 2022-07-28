@@ -7,13 +7,13 @@ const crypto = require("crypto");
 var cloudinary = require('cloudinary');
 
 
-//Register a User
+// Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  // const myCloud = await cloudinary.v2.uploader.upload(req.files.avatar, {
-  //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
-  // });
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
 
   const { name, email, password } = req.body;
 
@@ -21,10 +21,10 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     name,
     email,
     password,
-    // avatar: {
-    //   public_id: myCloud.public_id,
-    //   url: myCloud.secure_url,
-    // },
+    avatar: {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    },
   });
 
   sendToken(user, 201, res);
@@ -179,31 +179,31 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-//Update User Profile
+// update User Profile
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
 
-  // if (req.body.avatar !== "") {
-  //   const user = await User.findById(req.user.id);
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
 
-  //   const imageId = user.avatar.public_id;
+    const imageId = user.avatar.public_id;
 
-  //   await cloudinary.v2.uploader.destroy(imageId);
+    await cloudinary.v2.uploader.destroy(imageId);
 
-  //   const myCloud = await cloudinary.v2.uploader.upload(req.files.avatar, {
-  //     folder: "avatars",
-  //     width: 150,
-  //     crop: "scale",
-  //   });
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
-  //   newUserData.avatar = {
-  //     public_id: myCloud.public_id,
-  //     url: myCloud.secure_url,
-  //   };
-  // }
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
@@ -265,15 +265,19 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
 });
 
 
-//Delete User --Admin
+// Delete User --Admin
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
     return next(
-      new ErrorHandler(`User does not exist with Id: ${req.params.id}`, 400)
+      new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
     );
   }
+
+  const imageId = user.avatar.public_id;
+
+  await cloudinary.v2.uploader.destroy(imageId);
 
   await user.remove();
 
@@ -282,20 +286,3 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     message: "User Deleted Successfully",
   });
 });
-
-// exports.getRole = catchAsyncErrors(async (req, res, next) => {
-//   const user = await User.findById(req.user.id);
-//   let role=false;
-
-//   if(!user){ 
-//     role = false;
-//   } else {
-//     if(user.role==="admin")
-//     {
-//       role=true;
-//     }
-//   }
-//   res.status(200).json({ 
-//       role
-//   });
-// });

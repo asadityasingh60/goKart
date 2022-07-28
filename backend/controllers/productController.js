@@ -45,7 +45,7 @@ exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
 //Get All Product or Render All Product on Main Page
 exports.getAllProducts = catchAsyncErrors(async(req,res,next)=>{
 
-    const resultPerPage = 4;
+    const resultPerPage = 8;
     const productsCount = await Product.countDocuments();
 
     const apiFeature = new ApiFeatures(Product.find(),req.query)    // (query, queryStr)
@@ -230,50 +230,50 @@ exports.getAllReviews = catchAsyncErrors(async(req,res,next)=>{
 
 // Delete Review
 exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
-    const product = await Product.findById(req.query.productId);
-  
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-  
-    const reviews = product.reviews.filter((rev) => {
-        rev._id.toString() !== req.query.id.toString()
-    });
-  
-    let avg = 0;
-  
-    reviews.forEach((rev) => {
-      avg += rev.rating;
-    });
-  
-    let ratings = 0;
-  
-    if (reviews.length === 0) {
-      ratings = 0;
-    } else {
-      ratings = avg / reviews.length;
-    }
-  
-    const numOfReviews = reviews.length;
-  
-    await Product.findByIdAndUpdate(
-      req.query.productId,
-      {
-        reviews,
-        ratings,
-        numOfReviews,
-      },
-      {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
-      }
-    );
-  
-    res.status(200).json({
-      success: true,
-    });
+  const product = await Product.findById(req.query.productId);
+
+  if (!product) {
+    return next(new ErrorHander("Product not found", 404));
+  }
+
+  const reviews = product.reviews.filter(
+    (rev) => rev._id.toString() !== req.query.id.toString()
+  );
+
+  let avg = 0;
+
+  reviews.forEach((rev) => {
+    avg += rev.rating;
   });
+
+  let ratings = 0;
+
+  if (reviews.length === 0) {
+    ratings = 0;
+  } else {
+    ratings = avg / reviews.length;
+  }
+
+  const numOfReviews = reviews.length;
+
+  await Product.findByIdAndUpdate(
+    req.query.productId,
+    {
+      reviews,
+      ratings,
+      numOfReviews,
+    },
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+  });
+});
 
 // Get All Product (Admin)
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {

@@ -1,6 +1,6 @@
 import {legacy_createStore as createStore, combineReducers,applyMiddleware} from "redux";
-import {newProductReducer, newReviewReducer, productDetailsReducer, productReducer, productsReducer} from "./reducers/productReducer.jsx"
-import {forgotPassawordReducer, profileReducer, userReducer} from "./reducers/userReducer.jsx"
+import {newProductReducer, newReviewReducer, productDetailsReducer, productReducer, productReviewsReducer, productsReducer, reviewReducer} from "./reducers/productReducer.jsx"
+import {userDetailsReducer, allUsersReducer, forgotPasswordReducer, profileReducer, userReducer} from "./reducers/userReducer.jsx"
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import { cartReducer } from "./reducers/cartReducer.jsx";
@@ -12,10 +12,14 @@ const reducer = combineReducers({
     newProduct : newProductReducer,
     product:productReducer,
     newReview : newReviewReducer,
+    productReviews : productReviewsReducer,
+    review : reviewReducer,
 
     user : userReducer,
     profile : profileReducer,
-    forgotPassword : forgotPassawordReducer,
+    forgotPassword : forgotPasswordReducer,
+    allUsers : allUsersReducer,
+    userDetails : userDetailsReducer,
 
     cart: cartReducer,
 

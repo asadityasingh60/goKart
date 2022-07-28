@@ -35,7 +35,12 @@ import NewProduct from "./components/Admin/NewProduct.jsx";
 import UpdateProduct from "./components/Admin/UpdateProduct.jsx";
 import OrderList from "./components/Admin/OrderList.jsx";
 import ProcessOrder from "./components/Admin/ProcessOrder.jsx";
-
+import UsersList from "./components/Admin/UsersList.jsx";
+import UpdateUser from "./components/Admin/UpdateUser.jsx";
+import ProductReviews from "./components/Admin/ProductReviews.jsx";
+import About from "./components/layout/Information/About.jsx";
+import Contact from "./components/layout/Information/Contact.jsx";
+import NotFound from "./components/layout/Not Found/NotFound.jsx";
 
 
 export default function App() {
@@ -55,10 +60,12 @@ export default function App() {
         families:["Roboto","Droid Sans","Chilanka"]
       }
     });
-
+    
     store.dispatch(loadUser());
     getStripeApiKey();
   },[]);
+
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
 
   return (
     <Router>
@@ -90,6 +97,12 @@ export default function App() {
         <Route exact path="/admin/product/:id" element={<UpdateProduct/>}/>
         <Route exact path="/admin/orders" element={<OrderList/>}/>
         <Route exact path="/admin/order/:id" element={<ProcessOrder/>}/>
+        <Route exact path="/admin/users" element={<UsersList/>}/>
+        <Route exact path="/admin/user/:id" element={<UpdateUser/>}/>
+        <Route exact path="/admin/reviews" element={<ProductReviews/>}/>
+        <Route exact path="/about" element={<About/>}/>
+        <Route exact path="/contact" element={<Contact/>}/>
+        <Route exact path="*" element={ window.location.pathname === "/process/payment" ? null : <NotFound/>}/>
       </Routes>
       <Footer/>
     </Router>
