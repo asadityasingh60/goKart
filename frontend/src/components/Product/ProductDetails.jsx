@@ -1,5 +1,4 @@
 import React,{Fragment,useEffect, useState} from "react";
-import Carousel from 'react-material-ui-carousel';
 import {useSelector, useDispatch} from "react-redux";
 import { clearErrors, getProductDetails, newReview } from "../../actions/productAction";
 import MetaData from "../layout/MetaData";
@@ -100,7 +99,6 @@ const ProductDetails = () => {
               <MetaData title={`${product.name} -- ECOMMERCE`} />
               <div className="ProductDetails">
                 <div>
-                  <Carousel>
                     {product.images &&
                       product.images.map((item, i) => (
                         <img
@@ -110,7 +108,6 @@ const ProductDetails = () => {
                           alt={`${i} Slide`}
                         />
                       ))}
-                  </Carousel>
                 </div>
     
                 <div>

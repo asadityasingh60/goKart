@@ -105,6 +105,11 @@
     display: flex;
     padding: 0%;
   }
+
+  #registerImage >span{
+    opacity : 0.4;
+    font-size: 70%;
+  }
   
   #registerImage > input::file-selector-button {
     cursor: pointer;

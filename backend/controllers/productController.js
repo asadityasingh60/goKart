@@ -52,7 +52,7 @@ exports.getAllProducts = catchAsyncErrors(async(req,res,next)=>{
     .search()
     .filter()
 
-    let products = await apiFeature.query;
+    let products = await Product.find();
 
     let filteredProductsCount = products.length;
 

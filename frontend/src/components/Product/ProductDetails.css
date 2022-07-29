@@ -7,6 +7,11 @@
   display: flex;
 }
 
+.ProductDetails > div:first-child >img {
+  width : 100% !important;
+  height: 80% !important;
+}
+
 .ProductDetails > div {
   width: 100%;
   display: flex;
@@ -22,9 +27,7 @@
   align-items: flex-start;
 }
 
-.img {
-  max-width: 100% !important;
-}
+
 
 .detailsBlock-1 > h2 {
   color: rgb(54, 54, 54);

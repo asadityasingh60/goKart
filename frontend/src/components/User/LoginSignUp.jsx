@@ -186,6 +186,7 @@ export default function LoginSignUp() {
                       accept="image/*"
                       onChange={registerDataChange}
                     />
+                    <span>*image size less than 500KB</span>
                   </div>
                   <input type="submit" value="Register" className="signUpBtn" />
                 </form>
