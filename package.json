@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "ecommerce website",
   "main": "backend/server.js",
+  "engines": {
+    "node": "16.15.0",
+    "npm":"8.13.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "backend/server.js",
     "dev": "nodemon backend/server.js",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm insall --prefix frontend && npm run build --prefix frontend"
   },
   "author": "",
   "license": "ISC",
