@@ -8,7 +8,7 @@ const path = require("path");
 
 
 //Config
-if(process.env.NODE_ENV!=="PRODUCTION"){
+if(process.env.NODE_ENV!=="production"){
     require("dotenv").config({path:"backend/config/config.env"});  // This configs the "listen" to connect to config.env in config folder
 }
 
